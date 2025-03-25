@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'widgets/phone_list.dart';
+
 void main() {
   runApp(const MainApp());
 }
@@ -21,11 +23,7 @@ class MainApp extends StatelessWidget {
         scaffoldBackgroundColor: const Color.fromARGB(255, 50, 58, 60),
       ),
       debugShowCheckedModeBanner: false,
-      home: const Scaffold(
-        body: Center(
-          child: Text('Hello World!'),
-        ),
-      ),
+      home: const PhoneList(),
     );
   }
 }
