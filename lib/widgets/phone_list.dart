@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobiles_application_flutter/Data/dummy_data.dart';
 import 'package:mobiles_application_flutter/models/phone.dart';
+import 'package:mobiles_application_flutter/widgets/new_phone.dart';
 
 class PhoneList extends StatefulWidget {
   const PhoneList({super.key});
@@ -16,6 +17,18 @@ class _PhoneList extends State<PhoneList> {
   void initState() {
     _phones = dummyPhones;
     super.initState();
+  }
+
+  void _addPhone() async {
+    final newItem = await Navigator.of(context).push<Phone>(
+      MaterialPageRoute(
+        builder: (ctx) => const NewPhone(),
+      ),
+    );
+
+    if (newItem == null) {
+      return;
+    }
   }
 
   @override
@@ -46,6 +59,12 @@ class _PhoneList extends State<PhoneList> {
     return Scaffold(
         appBar: AppBar(
           title: const Text('Phone Arena'),
+          actions: [
+            IconButton(
+              onPressed: _addPhone,
+              icon: const Icon(Icons.add),
+            ),
+          ],
         ),
         body: content,
       );
