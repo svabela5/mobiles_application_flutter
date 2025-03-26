@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:mobiles_application_flutter/models/phone.dart';
 import 'package:mobiles_application_flutter/widgets/new_phone.dart';
 import 'package:http/http.dart' as http;
+import 'package:mobiles_application_flutter/widgets/phone_details.dart';
 
 class PhoneList extends StatefulWidget {
   const PhoneList({super.key});
@@ -14,6 +15,8 @@ class PhoneList extends StatefulWidget {
 
 class _PhoneList extends State<PhoneList> {
   List<Phone> _phones = [];
+  bool showPhoneDetails = false;
+  Phone? selectedPhone;
 
   @override
   void initState() {
@@ -44,6 +47,12 @@ class _PhoneList extends State<PhoneList> {
         _phones = loadedList;
       });
     } catch (error) {}
+  }
+
+  void setPhoneDetailsToFalse() {
+    setState(() {
+      showPhoneDetails = false;
+    });
   }
 
   void _addPhone() async {
@@ -82,11 +91,19 @@ class _PhoneList extends State<PhoneList> {
               ),
               onTap: () {
                 // Navigate to the phone details page
+                setState(() {
+                  showPhoneDetails = true;
+                  selectedPhone = _phones[index];
+                });
               },
             );
           },
         );
     } // if ends here
+
+    if(showPhoneDetails){
+      content = PhoneInfo(phone: selectedPhone!, goBackToMainScreen: setPhoneDetailsToFalse);
+    }//if ends here
 
     return Scaffold(
         appBar: AppBar(
