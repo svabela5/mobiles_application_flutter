@@ -20,26 +20,34 @@ class _PhoneList extends State<PhoneList> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Phone Arena'),
-      ),
-      body: ListView.builder(
-        itemCount: _phones.length,
-        itemBuilder: (context, index) {
-          return ListTile(
-            title: Text(_phones[index].brand),
-            subtitle: Text(_phones[index].model),
-            leading: const Icon(Icons.phone_android),
-            trailing: Text(
+    Widget content = const Center(
+      child: Text('No Items in the list'),
+    );
+
+    if (_phones.isNotEmpty) {
+      content = ListView.builder(
+          itemCount: _phones.length,
+          itemBuilder: (context, index) {
+            return ListTile(
+              title: Text(_phones[index].brand),
+              subtitle: Text(_phones[index].model),
+              leading: const Icon(Icons.phone_android),
+              trailing: Text(
                 '€${_phones[index].price}',
               ),
-            onTap: () {
-              // Navigate to the phone details page
-            },
-          );
-        },
-      ),
-    );
+              onTap: () {
+                // Navigate to the phone details page
+              },
+            );
+          },
+        );
+    } // if ends here
+
+    return Scaffold(
+        appBar: AppBar(
+          title: const Text('Phone Arena'),
+        ),
+        body: content,
+      );
   }
 }
