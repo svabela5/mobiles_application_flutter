@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:mobiles_application_flutter/Data/dummy_data.dart';
+import 'package:mobiles_application_flutter/models/phone.dart';
 
 class PhoneList extends StatefulWidget {
   const PhoneList({super.key});
@@ -8,6 +10,14 @@ class PhoneList extends StatefulWidget {
 }
 
 class _PhoneList extends State<PhoneList> {
+  List<Phone> _phones = [];
+
+  @override
+  void initState() {
+    _phones = dummyPhones;
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -15,14 +25,14 @@ class _PhoneList extends State<PhoneList> {
         title: const Text('Phone Arena'),
       ),
       body: ListView.builder(
-        itemCount: 10,
+        itemCount: _phones.length,
         itemBuilder: (context, index) {
           return ListTile(
-            title: Text('Phone $index'),
-            subtitle: Text('Description of Phone $index'),
+            title: Text(_phones[index].brand),
+            subtitle: Text(_phones[index].model),
             leading: const Icon(Icons.phone_android),
             trailing: Text(
-                '€${index * 100}',
+                '€${_phones[index].price}',
               ),
             onTap: () {
               // Navigate to the phone details page
