@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:mobiles_application_flutter/models/phone.dart';
@@ -55,6 +56,16 @@ class _PhoneList extends State<PhoneList> {
     });
   }
 
+  void removePhone(Phone phoneToRemove){
+    setState(() {
+      print(phoneToRemove.id);
+      final url = Uri.https('phone-arena-flutter-default-rtdb.firebaseio.com', 'phones/${phoneToRemove.id}.json');
+      http.delete(url);
+
+      _phones.remove(phoneToRemove);
+    });
+  }
+
   void _addPhone() async {
     final newItem = await Navigator.of(context).push<Phone>(
       MaterialPageRoute(
@@ -82,20 +93,26 @@ class _PhoneList extends State<PhoneList> {
       content = ListView.builder(
           itemCount: _phones.length,
           itemBuilder: (context, index) {
-            return ListTile(
-              title: Text(_phones[index].model),
-              subtitle: Text(_phones[index].brand),
-              leading: const Icon(Icons.phone_android),
-              trailing: Text(
-                '€${_phones[index].price}',
-              ),
-              onTap: () {
-                // Navigate to the phone details page
-                setState(() {
-                  showPhoneDetails = true;
-                  selectedPhone = _phones[index];
-                });
+            return Dismissible(
+              onDismissed: (direction) {
+                removePhone(_phones[index]);
               },
+              key: ValueKey(_phones[index].id),
+              child: ListTile(
+                title: Text(_phones[index].model),
+                subtitle: Text(_phones[index].brand),
+                leading: const Icon(Icons.phone_android),
+                trailing: Text(
+                  '€${_phones[index].price}',
+                ),
+                onTap: () {
+                  // Navigate to the phone details page
+                  setState(() {
+                    showPhoneDetails = true;
+                    selectedPhone = _phones[index];
+                  });
+                },
+              ),
             );
           },
         );
