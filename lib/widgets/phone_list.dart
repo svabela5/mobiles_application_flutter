@@ -58,7 +58,6 @@ class _PhoneList extends State<PhoneList> {
 
   void removePhone(Phone phoneToRemove){
     setState(() {
-      print(phoneToRemove.id);
       final url = Uri.https('phone-arena-flutter-default-rtdb.firebaseio.com', 'phones/${phoneToRemove.id}.json');
       http.delete(url);
 
