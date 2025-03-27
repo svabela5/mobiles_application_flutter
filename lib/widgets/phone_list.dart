@@ -26,7 +26,6 @@ class _PhoneList extends State<PhoneList> {
   }
 
   Future _loadPhones() async {
-
     try {
       final url = Uri.https('phone-arena-flutter-default-rtdb.firebaseio.com', 'phones.json');
 
@@ -40,7 +39,7 @@ class _PhoneList extends State<PhoneList> {
           id: item.key,
           brand: item.value['brand'],
           model: item.value['model'],
-          price: item.value['price'],
+          price: item.value['price'].toDouble(),
         ));
       }
 

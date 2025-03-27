@@ -2,7 +2,9 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:mobiles_application_flutter/main.dart';
 import 'package:mobiles_application_flutter/models/phone.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 class NewPhone extends StatefulWidget {
   const NewPhone({Key? key}) : super(key: key);
@@ -18,6 +20,27 @@ class _NewPhoneState extends State<NewPhone> {
   var _enteredBrand = '';
   var _enteredModel = '';
   var _enteredPrice = 0.00;
+
+  Future<void> showNotification() async {
+  const AndroidNotificationDetails androidPlatformChannelSpecifics =
+      AndroidNotificationDetails(
+    'your_channel_id', // Unique channel ID
+    'Your Channel Name', // Channel Name
+    channelDescription: 'Your channel description',
+    importance: Importance.max,
+    priority: Priority.high,
+  );
+
+  const NotificationDetails platformChannelSpecifics =
+      NotificationDetails(android: androidPlatformChannelSpecifics);
+
+  await flutterLocalNotificationsPlugin.show(
+    0, // Notification ID
+    'Phone Added Successfully', // Title
+    '$_enteredBrand $_enteredModel was added', // Body
+    platformChannelSpecifics,
+  );
+}
 
   var isSendingData = false;
 
@@ -44,6 +67,8 @@ class _NewPhoneState extends State<NewPhone> {
       if (!context.mounted) {
         return;
       }
+
+      showNotification();
 
       Navigator.of(context).pop(Phone(
           id: responseData['name'],

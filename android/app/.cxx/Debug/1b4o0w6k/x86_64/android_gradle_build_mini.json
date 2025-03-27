@@ -1,0 +1,20 @@
+{
+  "buildFiles": [
+    "C:\\Users\\svena\\Documents\\LEVEL 6\\LVL 6.2\\Cross Platform\\Flutter\\flutter\\packages\\flutter_tools\\gradle\\src\\main\\groovy\\CMakeLists.txt"
+  ],
+  "cleanCommandsComponents": [
+    [
+      "C:\\Users\\svena\\AppData\\Local\\Android\\sdk\\cmake\\3.22.1\\bin\\ninja.exe",
+      "-C",
+      "C:\\Users\\svena\\Documents\\LEVEL 6\\LVL 6.2\\Cross Platform\\mobiles_application_flutter\\android\\app\\.cxx\\Debug\\1b4o0w6k\\x86_64",
+      "clean"
+    ]
+  ],
+  "buildTargetsCommandComponents": [
+    "C:\\Users\\svena\\AppData\\Local\\Android\\sdk\\cmake\\3.22.1\\bin\\ninja.exe",
+    "-C",
+    "C:\\Users\\svena\\Documents\\LEVEL 6\\LVL 6.2\\Cross Platform\\mobiles_application_flutter\\android\\app\\.cxx\\Debug\\1b4o0w6k\\x86_64",
+    "{LIST_OF_TARGETS_TO_BUILD}"
+  ],
+  "libraries": {}
+}
