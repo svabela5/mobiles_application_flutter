@@ -89,32 +89,35 @@ class _PhoneList extends State<PhoneList> {
     );
 
     if (_phones.isNotEmpty) {
-      content = ListView.builder(
-          itemCount: _phones.length,
-          itemBuilder: (context, index) {
-            return Dismissible(
-              onDismissed: (direction) {
-                removePhone(_phones[index]);
-              },
-              key: ValueKey(_phones[index].id),
-              child: ListTile(
-                title: Text(_phones[index].model),
-                subtitle: Text(_phones[index].brand),
-                leading: const Icon(Icons.phone_android),
-                trailing: Text(
-                  '€${_phones[index].price}',
-                ),
-                onTap: () {
-                  // Navigate to the phone details page
-                  setState(() {
-                    showPhoneDetails = true;
-                    selectedPhone = _phones[index];
-                  });
+      content = RefreshIndicator(
+        onRefresh: _loadPhones,
+        child: ListView.builder(
+            itemCount: _phones.length,
+            itemBuilder: (context, index) {
+              return Dismissible(
+                onDismissed: (direction) {
+                  removePhone(_phones[index]);
                 },
-              ),
-            );
-          },
-        );
+                key: ValueKey(_phones[index].id),
+                child: ListTile(
+                  title: Text(_phones[index].model),
+                  subtitle: Text(_phones[index].brand),
+                  leading: const Icon(Icons.phone_android),
+                  trailing: Text(
+                    '€${_phones[index].price}',
+                  ),
+                  onTap: () {
+                    // Navigate to the phone details page
+                    setState(() {
+                      showPhoneDetails = true;
+                      selectedPhone = _phones[index];
+                    });
+                  },
+                ),
+              );
+            },
+          ),
+      );
     } // if ends here
 
     if(showPhoneDetails){

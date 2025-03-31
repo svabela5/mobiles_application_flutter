@@ -114,128 +114,138 @@ class _NewPhoneState extends State<NewPhone> {
         padding: const EdgeInsets.all(12),
         child: Form(
           key: _formKey,
-          child: Column(
-            children: [
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  //Brand
-                  Expanded(
-                    child: TextFormField(
-                      decoration: const InputDecoration(
-                        label: Text('Brand'),
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    //Brand
+                    Expanded(
+                      child: TextFormField(
+                        decoration: const InputDecoration(
+                          label: Text('Brand'),
+                        ),
+                        initialValue: '',
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Must be between 1 and 50 characters';
+                          }
+                          return null;
+                        },
+                        onSaved: (value) {
+                          _enteredBrand = value!;
+                        },
                       ),
-                      initialValue: '',
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Must be between 1 and 50 characters';
-                        }
-                        return null;
-                      },
-                      onSaved: (value) {
-                        _enteredBrand = value!;
-                      },
                     ),
-                  ),
-                  const SizedBox(
-                    width: 8,
-                  ),
-                  //Model
-                  Expanded(
-                    child: TextFormField(
-                      decoration: const InputDecoration(
-                        label: Text('Model'),
+                    const SizedBox(
+                      width: 8,
+                    ),
+                    //Model
+                    Expanded(
+                      child: TextFormField(
+                        decoration: const InputDecoration(
+                          label: Text('Model'),
+                        ),
+                        initialValue: '',
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Must be between 1 and 50 characters';
+                          }
+                          return null;
+                        },
+                        onSaved: (value) {
+                          _enteredModel = value!;
+                        },
                       ),
-                      initialValue: '',
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Must be between 1 and 50 characters';
-                        }
-                        return null;
-                      },
-                      onSaved: (value) {
-                        _enteredModel = value!;
-                      },
                     ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                //Price
+                TextFormField(
+                  maxLength: 50,
+                  decoration: const InputDecoration(
+                    label: Text('Price  (€)'),
                   ),
-                ],
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              //Price
-              TextFormField(
-                maxLength: 50,
-                decoration: const InputDecoration(
-                  label: Text('Price  (€)'),
+                  initialValue: '0.00',
+                  validator: (value) {
+                    if (value == null ||
+                        value.isEmpty ||
+                        double.tryParse(value) == null ||
+                        double.tryParse(value)! < 0) {
+                      return 'Must be a number greater than 0';
+                    }
+                    return null;
+                  },
+                  onSaved: (value) {
+                    _enteredPrice = double.tryParse(value!)!;
+                  },
                 ),
-                initialValue: '0.00',
-                validator: (value) {
-                  if (value == null ||
-                      value.isEmpty ||
-                      double.tryParse(value) == null ||
-                      double.tryParse(value)! < 0) {
-                    return 'Must be a number greater than 0';
-                  }
-                  return null;
-                },
-                onSaved: (value) {
-                  _enteredPrice = double.tryParse(value!)!;
-                },
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              //image buttons
-              const SizedBox(
-                height: 10,
-              ),
-              MaterialButton(
-                onPressed: _pickImageFromGallery,
-                color: Colors.blue,
-                child: const Text(
-                  "Pick Image from Gallery",
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16),
+                const SizedBox(
+                  height: 10,
                 ),
-              ),
-              MaterialButton(
-                onPressed: _pickImageFromCamera,
-                color: Colors.red,
-                child: const Text(
-                  "Pick Image from Camera",
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16),
+                //image buttons
+                const SizedBox(
+                  height: 10,
                 ),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              //save/cancel buttons
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  TextButton(
-                      onPressed: () {
-                        _formKey.currentState!.reset();
-                      },
-                      child: const Text('Reset')),
-                  ElevatedButton(
-                      onPressed: _saveItem,
-                      child: isSendingData
-                          ? const SizedBox(
-                              width: 16,
-                              height: 16,
-                              child: CircularProgressIndicator(),
-                            )
-                          : const Text('Submit')),
-                ],
-              )
-            ],
+                MaterialButton(
+                  onPressed: _pickImageFromGallery,
+                  color: Colors.blue,
+                  child: const Text(
+                    "Pick Image from Gallery",
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16),
+                  ),
+                ),
+                MaterialButton(
+                  onPressed: _pickImageFromCamera,
+                  color: Colors.red,
+                  child: const Text(
+                    "Pick Image from Camera",
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16),
+                  ),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                //image preview
+                 const SizedBox(
+              height: 20,
+            ),
+            _selectedImage == null
+                ? const Center(child: Text("No Image Selected"))
+                : Image.file(_selectedImage!),
+            const SizedBox(height: 20),
+                //save/cancel buttons
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    TextButton(
+                        onPressed: () {
+                          _formKey.currentState!.reset();
+                        },
+                        child: const Text('Reset')),
+                    ElevatedButton(
+                        onPressed: _saveItem,
+                        child: isSendingData
+                            ? const SizedBox(
+                                width: 16,
+                                height: 16,
+                                child: CircularProgressIndicator(),
+                              )
+                            : const Text('Submit')),
+                  ],
+                )
+              ],
+            ),
           ),
         ),
       ),

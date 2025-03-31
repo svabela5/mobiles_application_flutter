@@ -29,24 +29,27 @@ class PhoneInfo extends StatelessWidget {
 
     return Padding(
       padding: const EdgeInsets.all(16.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.end,  // Aligns text to the right
-        children: [
-          InfoLine(boldText: 'Phone:', normalText: '${phone.brand} ${phone.model}'),
-          const SizedBox(height: 10),
-          InfoLine(boldText: 'Price:', normalText: '€${phone.price}'),
-          const SizedBox(height: 10),
-          const SizedBox(
-            height: 20,
-          ),
-          _selectedImage == null
-              ? const Text("No Image Selected")
-              : Image.file(_selectedImage!),
-          ElevatedButton(
-            onPressed: goBackToMainScreen,
-            child: const Text('Go back'),
-          ),
-        ],
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.end,  // Aligns text to the right
+          children: [
+            InfoLine(boldText: 'Phone:', normalText: '${phone.brand} ${phone.model}'),
+            const SizedBox(height: 10),
+            InfoLine(boldText: 'Price:', normalText: '€${phone.price}'),
+            const SizedBox(height: 10),
+            const SizedBox(
+              height: 20,
+            ),
+            _selectedImage == null
+                ? const Center(child: Text("No Image Selected"))
+                : Center(child: Image.file(_selectedImage!)),
+            const SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: goBackToMainScreen,
+              child: const Text('Go back'),
+            ),
+          ],
+        ),
       ),
     );
   }
