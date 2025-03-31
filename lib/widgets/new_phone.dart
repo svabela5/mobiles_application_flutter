@@ -7,6 +7,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:mobiles_application_flutter/main.dart';
 import 'package:mobiles_application_flutter/models/phone.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:mobiles_application_flutter/widgets/image_buttons.dart';
 
 class NewPhone extends StatefulWidget {
   const NewPhone({Key? key}) : super(key: key);
@@ -188,38 +189,11 @@ class _NewPhoneState extends State<NewPhone> {
                   height: 10,
                 ),
                 //image buttons
-                const SizedBox(
-                  height: 10,
-                ),
-                MaterialButton(
-                  onPressed: _pickImageFromGallery,
-                  color: Colors.blue,
-                  child: const Text(
-                    "Pick Image from Gallery",
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16),
-                  ),
-                ),
-                MaterialButton(
-                  onPressed: _pickImageFromCamera,
-                  color: Colors.red,
-                  child: const Text(
-                    "Pick Image from Camera",
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16),
-                  ),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
+                ImageButtons(galleryFunction: _pickImageFromGallery, cameraFunction: _pickImageFromCamera),
                 //image preview
-                 const SizedBox(
-              height: 20,
-            ),
+                const SizedBox(
+                height: 20,
+                ),
             _selectedImage == null
                 ? const Center(child: Text("No Image Selected"))
                 : Image.file(_selectedImage!),
