@@ -1,7 +1,9 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:image_picker/image_picker.dart';
 import 'package:mobiles_application_flutter/main.dart';
 import 'package:mobiles_application_flutter/models/phone.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -20,6 +22,7 @@ class _NewPhoneState extends State<NewPhone> {
   var _enteredBrand = '';
   var _enteredModel = '';
   var _enteredPrice = 0.00;
+  var _encodedImage = '';
 
   Future<void> showNotification() async {
   const AndroidNotificationDetails androidPlatformChannelSpecifics =
@@ -42,7 +45,25 @@ class _NewPhoneState extends State<NewPhone> {
   );
 }
 
-  var isSendingData = false;
+  var isSendingData = false;File? _selectedImage;
+ 
+  Future _pickImageFromGallery() async {
+    final returnedImage = await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (returnedImage == null) return;
+    final imageTemporary = File(returnedImage.path);
+    setState(() {
+      _selectedImage = imageTemporary; 
+    });
+  }
+
+  Future _pickImageFromCamera() async {
+    final returnedImage = await ImagePicker().pickImage(source: ImageSource.camera);
+    if (returnedImage == null) return;
+    final imageTemporary = File(returnedImage.path);
+    setState(() {
+      _selectedImage = imageTemporary;
+    });
+  }
 
   void _saveItem() async {
     if (_formKey.currentState!.validate()) {
@@ -54,12 +75,15 @@ class _NewPhoneState extends State<NewPhone> {
 
       final url = Uri.https('phone-arena-flutter-default-rtdb.firebaseio.com', 'phones.json');
 
+      _encodedImage = _selectedImage != null ? base64Encode(_selectedImage!.readAsBytesSync()) : '';
+
       final response = await http.post(url,
           headers: {'Content-Type': 'application/json'},
           body: json.encode({
             'brand': _enteredBrand,
             'model': _enteredModel,
             'price': _enteredPrice,
+            'image': _encodedImage,
           }));
 
       Map<String, dynamic> responseData = json.decode(response.body);
@@ -75,6 +99,7 @@ class _NewPhoneState extends State<NewPhone> {
           brand: _enteredBrand,
           model: _enteredModel,
           price: _enteredPrice,
+          image: _encodedImage,
           ));
     }
   }
@@ -161,6 +186,36 @@ class _NewPhoneState extends State<NewPhone> {
               const SizedBox(
                 height: 10,
               ),
+              //image buttons
+              const SizedBox(
+                height: 10,
+              ),
+              MaterialButton(
+                onPressed: _pickImageFromGallery,
+                color: Colors.blue,
+                child: const Text(
+                  "Pick Image from Gallery",
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16),
+                ),
+              ),
+              MaterialButton(
+                onPressed: _pickImageFromCamera,
+                color: Colors.red,
+                child: const Text(
+                  "Pick Image from Camera",
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16),
+                ),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              //save/cancel buttons
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [

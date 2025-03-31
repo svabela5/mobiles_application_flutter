@@ -40,6 +40,7 @@ class _PhoneList extends State<PhoneList> {
           brand: item.value['brand'],
           model: item.value['model'],
           price: item.value['price'].toDouble(),
+          image: item.value['image'],
         ));
       }
 
