@@ -1,0 +1,31 @@
+name: Flutter CI
+
+on: # This section of the yamal file defines the events that will trigger the workflow.
+  push: # This workflow will run on push events.
+    branches: #Specifies the branches that will trigger the workflow.
+      - main
+  pull_request: # This workflow will run on push events.
+    branches: #Specifies the branches that will trigger the workflow.
+      - main
+
+jobs: # This section defines the jobs (actions) that will run as part of the workflow.
+  build: # the name of the job.
+    runs-on: ubuntu-latest # Specifies the type of virtual machine to use for the job.
+
+    steps: # this section defines the steps that are needed to complete the job
+      - name: 📥 Checkout repository #checks out the repo
+        uses: actions/checkout@v3
+
+      - name: 🔧 Set up Flutter # Sets up a flutter enviornment that will be needed
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.13.0'
+
+      - name: 📦 Install dependencies # Continues the setup by installing any missing dependencies
+        run: flutter pub get
+
+      - name: 🧪 Run tests # Runs the tests
+        run: flutter test
+
+      - name: 📦 Build APK # Builds the APK to be used later
+        run: flutter build apk --debug
