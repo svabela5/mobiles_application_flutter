@@ -42,6 +42,7 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      // showPerformanceOverlay: true,
       title: 'Phone Arena',
       theme: ThemeData.dark().copyWith(
         
